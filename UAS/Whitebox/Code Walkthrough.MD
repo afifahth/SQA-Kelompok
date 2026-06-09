@@ -1,48 +1,39 @@
-# CODE WALKTHROUGH
+# Code Walkthrough
+
+## Interface yang Diuji
+
+Produksi
 
 ## Definisi
 
-Code Walkthrough merupakan metode White Box Testing yang dilakukan dengan cara meninjau dan mendiskusikan source code secara bersama-sama untuk memahami alur logika program. Pengujian ini bertujuan untuk menemukan potensi kesalahan logika, meningkatkan kualitas kode, serta memastikan bahwa setiap fungsi telah dikembangkan sesuai dengan kebutuhan sistem.
+Code Walkthrough merupakan teknik White Box Testing yang dilakukan dengan meninjau source code secara langsung untuk memahami alur logika program, mengidentifikasi potensi kesalahan, serta memastikan bahwa setiap proses telah berjalan sesuai dengan kebutuhan sistem.
 
-Pada Inventory Management System, Code Walkthrough dilakukan terhadap modul Login, Data Bahan, dan Transaksi karena ketiga modul tersebut merupakan fungsi utama yang mendukung operasional sistem.
+Pada Sistem Inventory Management, Code Walkthrough dilakukan pada fitur Produksi karena fitur ini merupakan proses utama yang menghubungkan data bahan baku, perhitungan biaya produksi, serta pembaruan stok produk dan bahan baku.
 
-## Tujuan Pengujian
+## Tujuan
 
-Pengujian ini bertujuan untuk memastikan bahwa struktur program mudah dipahami, logika yang digunakan sesuai dengan kebutuhan sistem, dan setiap fungsi yang dibuat dapat berjalan dengan baik. Selain itu, Code Walkthrough juga bertujuan untuk mengidentifikasi kemungkinan kesalahan sejak tahap pengembangan sehingga dapat diperbaiki sebelum sistem digunakan.
+1. Memastikan logika program pada proses produksi berjalan sesuai kebutuhan sistem.
+2. Memastikan proses perhitungan kebutuhan bahan baku dilakukan dengan benar.
+3. Memastikan validasi stok bahan baku berjalan sesuai aturan.
+4. Memastikan data produksi tersimpan ke database dengan benar.
+5. Memastikan pembaruan stok produk dan bahan baku dilakukan secara tepat.
 
-### Login
+## Tabel Pengujian
 
-#### Deskripsi Pengujian
-Peninjauan dilakukan terhadap proses validasi username dan password yang digunakan untuk memberikan hak akses kepada pengguna.
+| No | Potongan Kode                                          | Deskripsi                                                                                                                                     |
+| -- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1  | `$jumlah_dibutuhkan = $takaran * $jumlah_produksi;`    | Sistem menghitung jumlah bahan baku yang diperlukan berdasarkan takaran bahan dan jumlah produksi yang akan dibuat.                           |
+| 2  | `if (!$b \|\| $b['stok'] < $jumlah_dibutuhkan)`        | Sistem memeriksa apakah stok bahan baku tersedia dan mencukupi kebutuhan produksi. Jika stok tidak mencukupi maka proses produksi dihentikan. |
+| 3  | `$subtotal = $jumlah_dibutuhkan * $b['harga_satuan'];` | Sistem menghitung biaya bahan baku yang digunakan dalam proses produksi.                                                                      |
+| 4  | `$total_hpp += $subtotal;`                             | Sistem menghitung total Harga Pokok Produksi (HPP) berdasarkan seluruh bahan baku yang digunakan.                                             |
+| 5  | `INSERT INTO t_produksi`                               | Sistem menyimpan data transaksi produksi ke dalam database.                                                                                   |
+| 6  | `UPDATE t_produk SET stok = stok + $jumlah_produksi`   | Sistem menambahkan stok produk jadi setelah proses produksi berhasil dilakukan.                                                               |
+| 7  | `UPDATE t_bahan_baku SET stok = stok - $jumlah_bahan`  | Sistem mengurangi stok bahan baku sesuai jumlah yang telah digunakan selama proses produksi.                                                  |
 
-| Bagian Kode | Hasil Pemeriksaan |
-|------------|------------------|
-| Validasi Username | Berjalan dengan baik |
-| Validasi Password | Berjalan dengan baik |
-| Redirect Dashboard | Berjalan dengan baik |
+## Analisis
 
-### Data Bahan
-
-#### Deskripsi Pengujian
-Peninjauan dilakukan terhadap proses pengelolaan data bahan mulai dari tambah, ubah, dan hapus data.
-
-| Bagian Kode | Hasil Pemeriksaan |
-|------------|------------------|
-| Tambah Data | Berjalan dengan baik |
-| Edit Data | Berjalan dengan baik |
-| Hapus Data | Berjalan dengan baik |
-
-### Transaksi
-
-#### Deskripsi Pengujian
-Peninjauan dilakukan terhadap proses transaksi yang memengaruhi perubahan stok dalam sistem.
-
-| Bagian Kode | Hasil Pemeriksaan |
-|------------|------------------|
-| Penyimpanan Data Transaksi | Berjalan dengan baik |
-| Penambahan Stok Pembelian | Berjalan dengan baik |
-| Pengurangan Stok Produksi | Berjalan dengan baik |
+Berdasarkan hasil peninjauan source code, proses produksi telah memiliki alur logika yang jelas mulai dari perhitungan kebutuhan bahan baku, validasi stok, perhitungan biaya produksi, penyimpanan data transaksi produksi, hingga pembaruan stok produk dan bahan baku. Setiap proses saling terhubung sehingga dapat mendukung jalannya proses produksi secara otomatis.
 
 ## Kesimpulan
 
-Berdasarkan hasil Code Walkthrough yang telah dilakukan, struktur program pada modul Login, Data Bahan, dan Transaksi dapat dipahami dengan baik serta telah sesuai dengan kebutuhan sistem. Tidak ditemukan kesalahan logika yang dapat menghambat fungsi utama aplikasi.
+Berdasarkan hasil Code Walkthrough yang telah dilakukan, logika program pada fitur Produksi telah berjalan sesuai dengan kebutuhan sistem. Sistem mampu menghitung kebutuhan bahan baku, memvalidasi stok, menyimpan data produksi, serta memperbarui stok produk dan bahan baku secara tepat sehingga proses produksi dapat berjalan dengan baik.

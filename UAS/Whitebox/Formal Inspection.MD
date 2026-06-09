@@ -1,48 +1,37 @@
-# FORMAL INSPECTION
+# Formal Inspection
+
+## Interface yang Diuji
+
+Data Bahan Baku
 
 ## Definisi
 
-Formal Inspection merupakan metode White Box Testing yang dilakukan secara sistematis untuk memeriksa kelengkapan, ketepatan, dan konsistensi data yang digunakan oleh sistem. Pengujian ini berfokus pada validasi data masukan dan keluaran agar sesuai dengan aturan yang telah ditentukan.
+Formal Inspection merupakan teknik White Box Testing yang dilakukan dengan memeriksa struktur program, validasi data, dan kelengkapan proses secara sistematis. Pengujian ini bertujuan untuk memastikan bahwa data yang dimasukkan ke dalam sistem telah memenuhi persyaratan yang ditentukan sebelum diproses atau disimpan ke dalam database.
 
-Pada Inventory Management System, Formal Inspection dilakukan untuk memastikan data yang diinput pengguna memenuhi ketentuan sistem sehingga dapat mengurangi kesalahan dan menjaga kualitas data.
+Pada Sistem Inventory Management, Formal Inspection dilakukan pada fitur Data Bahan Baku karena fitur ini merupakan sumber utama data yang digunakan dalam proses produksi dan pengelolaan persediaan.
 
-## Tujuan Pengujian
+## Tujuan
 
-Pengujian ini bertujuan untuk memastikan bahwa seluruh data yang diproses oleh sistem memiliki format yang benar, lengkap, dan sesuai dengan kebutuhan aplikasi. Selain itu, pengujian dilakukan untuk mencegah terjadinya kesalahan input yang dapat memengaruhi proses bisnis pada sistem inventori.
+1. Memastikan seluruh field input bahan baku tersedia dan dapat digunakan.
+2. Memastikan sistem melakukan validasi terhadap data yang wajib diisi.
+3. Memastikan data bahan baku dapat disimpan dengan benar ke dalam database.
+4. Memastikan data yang tersimpan dapat digunakan pada proses produksi.
+5. Memastikan kualitas data yang tersimpan tetap terjaga.
 
-### Login
+## Tabel Pengujian
 
-#### Deskripsi Pengujian
-Pemeriksaan dilakukan terhadap kelengkapan data login yang dimasukkan pengguna.
+| Skenario           | Data Masukan              | Hasil yang Diharapkan           | Status |
+| ------------------ | ------------------------- | ------------------------------- | ------ |
+| Semua field terisi | Nama, Satuan, Stok, Harga | Data berhasil disimpan          | Sesuai |
+| Nama bahan kosong  | Nama tidak diisi          | Sistem menolak penyimpanan data | Sesuai |
+| Stok kosong        | Stok tidak diisi          | Sistem menolak penyimpanan data | Sesuai |
+| Harga kosong       | Harga tidak diisi         | Sistem menolak penyimpanan data | Sesuai |
 
-| No | Pemeriksaan | Hasil |
-|----|------------|--------|
-| 1 | Username wajib diisi | Passed |
-| 2 | Password wajib diisi | Passed |
-| 3 | Format data sesuai | Passed |
 
-### Data Bahan
+## Analisis
 
-#### Deskripsi Pengujian
-Pemeriksaan dilakukan terhadap data bahan yang dimasukkan ke dalam sistem.
-
-| No | Pemeriksaan | Hasil |
-|----|------------|--------|
-| 1 | Nama bahan wajib diisi | Passed |
-| 2 | Stok berupa angka | Passed |
-| 3 | Data tersimpan dengan benar | Passed |
-
-### Transaksi
-
-#### Deskripsi Pengujian
-Pemeriksaan dilakukan terhadap data transaksi yang memengaruhi stok inventori.
-
-| No | Pemeriksaan | Hasil |
-|----|------------|--------|
-| 1 | Jumlah transaksi wajib diisi | Passed |
-| 2 | Data transaksi valid | Passed |
-| 3 | Data tersimpan pada database | Passed |
+Berdasarkan hasil pemeriksaan, seluruh field yang diperlukan pada form bahan baku telah tersedia dan dapat menerima input pengguna dengan baik. Sistem juga menerapkan validasi pada field yang wajib diisi sehingga data yang tidak lengkap tidak dapat disimpan ke database. Dengan adanya validasi tersebut, risiko terjadinya kesalahan data dapat diminimalkan dan kualitas informasi yang tersimpan menjadi lebih baik.
 
 ## Kesimpulan
 
-Berdasarkan hasil Formal Inspection, seluruh data yang digunakan dalam modul Login, Data Bahan, dan Transaksi telah memenuhi aturan validasi yang ditetapkan. Sistem mampu menangani data dengan baik sehingga risiko kesalahan input dapat diminimalkan.
+Berdasarkan hasil Formal Inspection yang telah dilakukan, fitur Data Bahan Baku telah memiliki mekanisme validasi yang memadai. Sistem mampu memastikan bahwa hanya data yang lengkap dan valid yang dapat disimpan ke dalam database sehingga mendukung kelancaran proses produksi dan pengelolaan persediaan.

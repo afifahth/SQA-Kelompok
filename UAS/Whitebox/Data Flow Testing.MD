@@ -1,45 +1,60 @@
-# DATA FLOW TESTING
+# Data Flow Testing
+
+## Interface yang Diuji
+
+Data Bahan Baku → Produksi
 
 ## Definisi
 
-Data Flow Testing merupakan metode White Box Testing yang berfokus pada pemeriksaan aliran data dalam sistem, mulai dari proses input, pengolahan, penyimpanan, hingga menghasilkan output. Pengujian ini dilakukan untuk memastikan bahwa data diproses dengan benar dan tidak terjadi kehilangan atau kesalahan data selama proses berlangsung.
+Data Flow Testing merupakan teknik White Box Testing yang digunakan untuk memeriksa aliran data dalam sistem, mulai dari proses input, penyimpanan, pengolahan, hingga menghasilkan output. Pengujian ini bertujuan untuk memastikan bahwa data yang digunakan pada setiap proses mengalir dengan benar dan menghasilkan informasi yang sesuai.
 
-Pada Inventory Management System, Data Flow Testing dilakukan pada modul Login, Data Bahan, dan Transaksi karena ketiga modul tersebut memiliki aliran data yang penting dalam operasional sistem.
+Pada Sistem Inventory Management, Data Flow Testing dilakukan pada proses Data Bahan Baku dan Produksi karena kedua fitur tersebut saling berhubungan secara langsung dalam pengelolaan persediaan dan proses produksi.
 
-## Tujuan Pengujian
+## Tujuan
 
-Pengujian ini bertujuan untuk memastikan bahwa data yang dimasukkan pengguna dapat diproses dengan benar oleh sistem, tersimpan pada database, dan menghasilkan output yang sesuai dengan kebutuhan aplikasi.
+1. Memastikan data bahan baku tersimpan dengan benar ke dalam database.
+2. Memastikan data bahan baku dapat digunakan pada proses produksi.
+3. Memastikan data stok bahan baku digunakan sebagai dasar validasi produksi.
+4. Memastikan data produksi tersimpan dengan benar setelah proses produksi berhasil dilakukan.
+5. Memastikan pembaruan stok bahan baku berjalan sesuai jumlah bahan yang digunakan.
 
-### Login
+## Diagram Aliran Data
 
-#### Deskripsi Pengujian
-Pengujian dilakukan untuk memastikan data login dapat diproses dengan benar hingga menghasilkan akses ke sistem.
+```text
+Admin
+  ↓
+Input Data Bahan Baku
+  ↓
+Database Bahan Baku
+  ↓
+Proses Produksi
+  ↓
+Validasi Stok
+  ↓
+Update Stok Bahan
+  ↓
+Data Produksi
+  ↓
+Laporan Produksi
+```
 
-| Input | Proses | Output | Status |
-|---------|---------|---------|---------|
-| Username dan Password | Validasi akun | Dashboard tampil | Passed |
+## Tabel Pengujian
 
-### Data Bahan
+| Komponen Data   | Sumber Data         | Proses                      | Output                  |
+| --------------- | ------------------- | --------------------------- | ----------------------- |
+| Nama Bahan      | Form Tambah Bahan   | Disimpan ke database        | Data bahan tersimpan    |
+| Stok Bahan      | Database Bahan Baku | Validasi produksi           | Status stok tersedia    |
+| Harga Satuan    | Database Bahan Baku | Perhitungan HPP             | Total biaya produksi    |
+| Jumlah Produksi | Form Produksi       | Perhitungan kebutuhan bahan | Jumlah bahan digunakan  |
+| Data Produksi   | Proses Produksi     | Penyimpanan transaksi       | Data produksi tersimpan |
+| Stok Bahan      | Database Bahan Baku | Pengurangan stok            | Stok bahan diperbarui   |
 
-#### Deskripsi Pengujian
-Pengujian dilakukan untuk memastikan data bahan dapat tersimpan dan ditampilkan kembali dengan benar.
+## Analisis
 
-| Input | Proses | Output | Status |
-|---------|---------|---------|---------|
-| Data bahan | Simpan ke database | Data tampil pada tabel | Passed |
-| Perubahan data bahan | Update database | Data diperbarui | Passed |
+Berdasarkan hasil pengujian, data yang berasal dari fitur Data Bahan Baku dapat digunakan dengan baik pada proses Produksi. Sistem mampu mengambil data stok dan harga bahan baku dari database, melakukan perhitungan kebutuhan bahan, menghitung biaya produksi, serta memperbarui data stok setelah produksi berhasil dilakukan.
 
-### Transaksi
-
-#### Deskripsi Pengujian
-Pengujian dilakukan terhadap aliran data transaksi yang memengaruhi stok inventori.
-
-| Input | Proses | Output | Status |
-|---------|---------|---------|---------|
-| Pembelian bahan | Update stok | Stok bertambah | Passed |
-| Produksi | Kurangi stok | Stok berkurang | Passed |
-| Data transaksi | Simpan database | Riwayat transaksi tersimpan | Passed |
+Aliran data yang terjadi pada sistem berjalan secara berurutan mulai dari input data bahan baku hingga menghasilkan data produksi dan pembaruan stok yang sesuai.
 
 ## Kesimpulan
 
-Berdasarkan hasil Data Flow Testing, seluruh aliran data pada modul Login, Data Bahan, dan Transaksi berjalan dengan baik. Data berhasil diproses mulai dari tahap input, pengolahan, penyimpanan, hingga menghasilkan output yang sesuai dengan kebutuhan sistem.
+Berdasarkan hasil Data Flow Testing yang telah dilakukan, aliran data pada Sistem Inventory Management berjalan dengan baik. Data yang dimasukkan pada fitur Data Bahan Baku dapat digunakan secara langsung pada proses Produksi, menghasilkan transaksi produksi yang valid, serta memperbarui stok bahan baku sesuai kebutuhan produksi. Hal ini menunjukkan bahwa integrasi data antar fitur telah berjalan sesuai dengan kebutuhan sistem.

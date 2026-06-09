@@ -1,63 +1,35 @@
-# DESK CHECKING
+# Desk Checking
+
+## Interface yang Diuji
+
+Produksi
 
 ## Definisi
 
-Desk Checking merupakan salah satu metode White Box Testing yang dilakukan dengan memeriksa logika program secara manual tanpa menjalankan aplikasi secara langsung. Pengujian ini berfokus pada pemeriksaan alur program, penggunaan variabel, proses input, proses pengolahan data, serta output yang dihasilkan oleh sistem. Tujuan dari Desk Checking adalah untuk menemukan kesalahan logika sejak tahap awal pengembangan sehingga dapat mengurangi kemungkinan terjadinya kesalahan saat sistem dijalankan.
+Desk Checking merupakan teknik White Box Testing yang dilakukan dengan memeriksa logika program secara manual tanpa menjalankan aplikasi secara langsung. Pengujian ini bertujuan untuk memastikan bahwa setiap proses perhitungan dan pengambilan keputusan pada program telah berjalan sesuai dengan algoritma yang dirancang.
 
-Pada Inventory Management System, Desk Checking digunakan untuk memeriksa logika program pada modul Login, Data Bahan, dan Transaksi yang merupakan fitur utama dalam sistem.
+Pada Sistem Inventory Management, Desk Checking dilakukan pada fitur Produksi karena fitur ini memiliki proses perhitungan kebutuhan bahan baku, pengecekan stok, serta pembaruan stok setelah proses produksi berhasil dilakukan.
 
-## Tujuan Pengujian
+## Tujuan
 
-Pengujian Desk Checking dilakukan untuk memastikan bahwa setiap proses utama pada Inventory Management System telah dirancang dengan logika yang benar. Pemeriksaan difokuskan pada proses autentikasi pengguna, pengelolaan data bahan, serta transaksi yang memengaruhi jumlah stok dalam sistem.
+1. Memastikan sistem dapat menghitung kebutuhan bahan baku dengan benar.
+2. Memastikan sistem dapat memvalidasi ketersediaan stok bahan baku sebelum produksi dilakukan.
+3. Memastikan stok bahan baku berkurang sesuai jumlah yang digunakan.
+4. Memastikan proses produksi gagal apabila stok bahan baku tidak mencukupi.
+5. Memastikan logika produksi berjalan sesuai kebutuhan sistem.
 
-Selain itu, pengujian ini bertujuan untuk memastikan bahwa data yang dimasukkan oleh pengguna dapat diproses dengan benar, menghasilkan output yang sesuai, serta tidak menimbulkan kesalahan yang dapat mengganggu operasional sistem.
+## Tabel Pengujian
 
----
+| Stok Awal | Jumlah Dibutuhkan | Stok Akhir  | Kondisi       | Hasil yang Diharapkan                        | Status |
+| --------- | ----------------- | ----------- | ------------- | -------------------------------------------- | ------ |
+| 100       | 20                | 80          | 100 - 20 = 80 | Produksi berhasil diproses                   | Sesuai |
+| 50        | 20                | 30          | 50 - 20 = 30  | Produksi berhasil diproses                   | Sesuai |
+| 15        | 20                | Tidak Valid | 15 < 20       | Produksi ditolak karena stok tidak mencukupi | Sesuai |
 
-## Modul Login
+## Analisis
 
-### Deskripsi Pengujian
-
-Pengujian dilakukan untuk memastikan bahwa sistem dapat memvalidasi username dan password yang dimasukkan oleh pengguna sebelum memberikan akses ke dalam aplikasi.
-
-| No | Skenario Pengujian | Hasil yang Diharapkan | Status |
-|----|-------------------|----------------------|--------|
-| 1 | Username dan password benar | Sistem menampilkan Dashboard | Passed |
-| 2 | Username benar dan password salah | Sistem menampilkan pesan gagal login | Passed |
-| 3 | Username dan password kosong | Sistem menolak proses login | Passed |
-
----
-
-## Modul Data Bahan
-
-### Deskripsi Pengujian
-
-Pengujian dilakukan untuk memastikan bahwa proses pengelolaan data bahan dapat berjalan dengan baik mulai dari penambahan, perubahan, hingga penghapusan data.
-
-| No | Skenario Pengujian | Hasil yang Diharapkan | Status |
-|----|-------------------|----------------------|--------|
-| 1 | Menambahkan data bahan baru | Data berhasil tersimpan | Passed |
-| 2 | Mengubah data bahan | Data berhasil diperbarui | Passed |
-| 3 | Menghapus data bahan | Data berhasil dihapus | Passed |
-
----
-
-## Modul Transaksi
-
-### Deskripsi Pengujian
-
-Pengujian dilakukan untuk memastikan bahwa transaksi yang dilakukan pengguna dapat memengaruhi jumlah stok sesuai dengan aturan yang berlaku pada sistem.
-
-| No | Skenario Pengujian | Hasil yang Diharapkan | Status |
-|----|-------------------|----------------------|--------|
-| 1 | Transaksi pembelian bahan | Stok bahan bertambah | Passed |
-| 2 | Transaksi produksi | Stok bahan berkurang | Passed |
-| 3 | Penyimpanan data transaksi | Data tersimpan pada database | Passed |
-
----
+Berdasarkan hasil pengujian, sistem mampu melakukan perhitungan kebutuhan bahan baku sesuai jumlah produksi yang dimasukkan pengguna. Sistem juga berhasil melakukan validasi stok sebelum proses produksi dijalankan. Ketika stok bahan baku mencukupi, proses produksi dapat dilanjutkan dan stok bahan akan dikurangi sesuai kebutuhan. Sebaliknya, apabila stok tidak mencukupi, sistem secara otomatis menolak proses produksi dan menampilkan pesan kesalahan.
 
 ## Kesimpulan
 
-Berdasarkan hasil Desk Checking yang telah dilakukan, seluruh logika program pada modul Login, Data Bahan, dan Transaksi telah berjalan sesuai dengan kebutuhan sistem. Setiap proses input, pengolahan data, dan output yang dihasilkan menunjukkan hasil yang sesuai dengan rancangan aplikasi.
-
-Pengujian ini menunjukkan bahwa sistem mampu menangani proses autentikasi pengguna, pengelolaan data bahan, serta transaksi yang memengaruhi stok inventori dengan baik. Oleh karena itu, dapat disimpulkan bahwa logika dasar pada Inventory Management System telah memenuhi kebutuhan fungsional aplikasi dan siap untuk dilakukan pengujian pada tahap berikutnya.
+Berdasarkan hasil Desk Checking yang telah dilakukan, logika program pada fitur Produksi telah berjalan sesuai dengan kebutuhan sistem. Sistem mampu menghitung kebutuhan bahan baku, melakukan validasi stok, dan memperbarui data stok secara tepat sehingga dapat meminimalkan kesalahan dalam proses produksi.
