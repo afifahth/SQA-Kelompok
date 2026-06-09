@@ -1,4 +1,4 @@
-# Code Walkthrough
+# Control Flow Testing
 
 ## Interface yang Diuji
 
@@ -6,34 +6,82 @@ Produksi
 
 ## Definisi
 
-Code Walkthrough merupakan teknik White Box Testing yang dilakukan dengan meninjau source code secara langsung untuk memahami alur logika program, mengidentifikasi potensi kesalahan, serta memastikan bahwa setiap proses telah berjalan sesuai dengan kebutuhan sistem.
+Control Flow Testing merupakan teknik White Box Testing yang digunakan untuk menguji jalur eksekusi program berdasarkan percabangan dan pengambilan keputusan yang terdapat pada source code. Pengujian ini bertujuan untuk memastikan bahwa setiap kondisi menghasilkan alur proses yang sesuai dengan logika program yang telah dirancang.
 
-Pada Sistem Inventory Management, Code Walkthrough dilakukan pada fitur Produksi karena fitur ini merupakan proses utama yang menghubungkan data bahan baku, perhitungan biaya produksi, serta pembaruan stok produk dan bahan baku.
+Pada Sistem Inventory Management, Control Flow Testing dilakukan pada fitur Produksi karena fitur ini memiliki beberapa percabangan penting seperti pengecekan ketersediaan komposisi produk, validasi stok bahan baku, penyimpanan data produksi, serta pembaruan stok setelah proses produksi berhasil dilakukan.
 
 ## Tujuan
 
-1. Memastikan logika program pada proses produksi berjalan sesuai kebutuhan sistem.
-2. Memastikan proses perhitungan kebutuhan bahan baku dilakukan dengan benar.
-3. Memastikan validasi stok bahan baku berjalan sesuai aturan.
-4. Memastikan data produksi tersimpan ke database dengan benar.
-5. Memastikan pembaruan stok produk dan bahan baku dilakukan secara tepat.
+1. Memastikan seluruh jalur keputusan pada proses produksi berjalan sesuai logika program.
+2. Memastikan sistem dapat mendeteksi kondisi ketika komposisi produk belum tersedia.
+3. Memastikan sistem dapat mendeteksi kondisi stok bahan baku yang tidak mencukupi.
+4. Memastikan sistem dapat melanjutkan proses produksi apabila seluruh persyaratan terpenuhi.
+5. Memastikan sistem menghasilkan output yang sesuai pada setiap kondisi yang diuji.
+
+## Diagram Alur
+
+```text
+Mulai
+  ↓
+Pilih Produk
+  ↓
+Input Jumlah Produksi
+  ↓
+Ambil Data Komposisi Produk
+  ↓
+Apakah Komposisi Produk Tersedia?
+├── Tidak
+│   ↓
+│ Tampilkan Pesan:
+│ "Komposisi produk belum diatur"
+│   ↓
+│ Selesai
+│
+└── Ya
+    ↓
+    Hitung Kebutuhan Bahan
+    ↓
+    Cek Stok Bahan
+    ↓
+    Apakah Stok Mencukupi?
+    ├── Tidak
+    │   ↓
+    │ Redirect ke:
+    │ form.php?error=stok_kurang
+    │   ↓
+    │ Selesai
+    │
+    └── Ya
+        ↓
+        Hitung Total HPP
+        ↓
+        Simpan Data Produksi
+        ↓
+        Simpan Detail Produksi
+        ↓
+        Update Stok Produk
+        ↓
+        Kurangi Stok Bahan
+        ↓
+        Redirect ke:
+        │ ../dashboard.php?success=produksi
+        ↓
+        Selesai
+```
 
 ## Tabel Pengujian
 
-| No | Potongan Kode                                          | Deskripsi                                                                                                                                     |
-| -- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1  | `$jumlah_dibutuhkan = $takaran * $jumlah_produksi;`    | Sistem menghitung jumlah bahan baku yang diperlukan berdasarkan takaran bahan dan jumlah produksi yang akan dibuat.                           |
-| 2  | `if (!$b \|\| $b['stok'] < $jumlah_dibutuhkan)`        | Sistem memeriksa apakah stok bahan baku tersedia dan mencukupi kebutuhan produksi. Jika stok tidak mencukupi maka proses produksi dihentikan. |
-| 3  | `$subtotal = $jumlah_dibutuhkan * $b['harga_satuan'];` | Sistem menghitung biaya bahan baku yang digunakan dalam proses produksi.                                                                      |
-| 4  | `$total_hpp += $subtotal;`                             | Sistem menghitung total Harga Pokok Produksi (HPP) berdasarkan seluruh bahan baku yang digunakan.                                             |
-| 5  | `INSERT INTO t_produksi`                               | Sistem menyimpan data transaksi produksi ke dalam database.                                                                                   |
-| 6  | `UPDATE t_produk SET stok = stok + $jumlah_produksi`   | Sistem menambahkan stok produk jadi setelah proses produksi berhasil dilakukan.                                                               |
-| 7  | `UPDATE t_bahan_baku SET stok = stok - $jumlah_bahan`  | Sistem mengurangi stok bahan baku sesuai jumlah yang telah digunakan selama proses produksi.                                                  |
+| Jalur | Kondisi                                            | Hasil yang Diharapkan                                                                                                                  | Status |
+| ----- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| P1    | Komposisi produk tersedia dan stok bahan mencukupi | Sistem menghitung kebutuhan bahan, menyimpan data produksi, memperbarui stok, kemudian redirect ke `../dashboard.php?success=produksi` | Sesuai |
+| P2    | Komposisi produk tidak tersedia                    | Sistem menampilkan pesan "Komposisi produk belum diatur" dan proses produksi dihentikan                                                | Sesuai |
+| P3    | Stok bahan tidak mencukupi                         | Sistem redirect ke `form.php?error=stok_kurang` dan proses produksi dibatalkan                                                         | Sesuai |
+| P4    | Data produksi berhasil disimpan                    | Sistem menyimpan detail produksi serta memperbarui stok produk dan bahan baku                                                          | Sesuai |
 
 ## Analisis
 
-Berdasarkan hasil peninjauan source code, proses produksi telah memiliki alur logika yang jelas mulai dari perhitungan kebutuhan bahan baku, validasi stok, perhitungan biaya produksi, penyimpanan data transaksi produksi, hingga pembaruan stok produk dan bahan baku. Setiap proses saling terhubung sehingga dapat mendukung jalannya proses produksi secara otomatis.
+Berdasarkan hasil pengujian, seluruh jalur keputusan pada fitur Produksi telah berjalan sesuai dengan logika program yang dirancang. Sistem mampu membedakan kondisi ketika komposisi produk belum tersedia, stok bahan baku tidak mencukupi, maupun ketika seluruh persyaratan produksi terpenuhi. Setiap kondisi menghasilkan respons yang berbeda sesuai kebutuhan sistem sehingga proses produksi dapat berjalan dengan lebih aman dan terkontrol.
 
 ## Kesimpulan
 
-Berdasarkan hasil Code Walkthrough yang telah dilakukan, logika program pada fitur Produksi telah berjalan sesuai dengan kebutuhan sistem. Sistem mampu menghitung kebutuhan bahan baku, memvalidasi stok, menyimpan data produksi, serta memperbarui stok produk dan bahan baku secara tepat sehingga proses produksi dapat berjalan dengan baik.
+Berdasarkan hasil Control Flow Testing yang telah dilakukan, seluruh percabangan dan jalur keputusan pada fitur Produksi telah berfungsi dengan baik. Sistem mampu melakukan validasi terhadap komposisi produk dan stok bahan baku sebelum produksi dilakukan, serta mampu menyimpan data produksi dan memperbarui stok secara otomatis ketika proses produksi berhasil dijalankan. Dengan demikian, alur kontrol pada fitur Produksi telah berjalan sesuai dengan kebutuhan Sistem Inventory Management.
